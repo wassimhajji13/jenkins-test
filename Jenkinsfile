@@ -16,7 +16,8 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 sh '''
-                    docker build -t wassimhajji11/jenkins-test-image:latest .
+                    # IMPORTANT : on force une vraie reconstruction
+                    docker build --no-cache -t wassimhajji11/jenkins-test-image:latest .
                 '''
             }
         }
@@ -37,13 +38,18 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('Deploy on VM') {
             steps {
                 sh '''
+                    # Arrêter ancien conteneur
                     docker stop myapp || true
                     docker rm myapp || true
+
+                    # Télécharger nouvelle image
                     docker pull wassimhajji11/jenkins-test-image:latest
-                    docker run -d --name myapp -p 8081:80 wassimhajji11/jenkins-test-image:latest
+
+                    # Relancer nouvelle version
+                    docker run -d --name myapp -p 8081:80 --memory="512m" wassimhajji11/jenkins-test-image:latest
                 '''
             }
         }
@@ -51,7 +57,10 @@ pipeline {
 
     post {
         success {
-            echo "🎉 Deployment complete!"
+            echo "🚀 Nouveau déploiement réussi !"
+        }
+        failure {
+            echo "❌ Le déploiement a échoué"
         }
     }
 }
