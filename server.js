@@ -2,7 +2,7 @@ const http = require('http');
 
 const server = http.createServer((req, res) => {
     res.writeHead(200, {"Content-Type": "text/plain"});
-    res.end("🚀 Nouvelle version déployée automatiquement via CI/CD !\n");
+    res.end("🚀  jwk fesfes !\n");
 });
 
 server.listen(80, () => {
