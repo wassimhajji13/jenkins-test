@@ -21,7 +21,7 @@ pipeline {
             }
         }
 
-        stage('Login to Docker Hub') {
+        stage('Docker Login') {
             steps {
                 sh '''
                     echo "$DOCKERHUB_CREDENTIALS_PSW" | docker login -u "$DOCKERHUB_CREDENTIALS_USR" --password-stdin
@@ -37,7 +37,7 @@ pipeline {
             }
         }
 
-        stage('Deploy on VM') {
+        stage('Deploy') {
             steps {
                 sh '''
                     docker stop myapp || true
@@ -51,7 +51,7 @@ pipeline {
 
     post {
         success {
-            echo "🚀 Pipeline complete & deployed!"
+            echo "🎉 Deployment complete!"
         }
     }
 }
