@@ -8,4 +8,4 @@ WORKDIR /app
 COPY . .
 
 # Exécuter un fichier JavaScript au démarrage
-CMD ["node", "bad-code.js"]
+CMD ["node", "server.js"]
